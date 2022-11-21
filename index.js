@@ -22,7 +22,13 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
         async function run(){
             try{
                 const destinationCollection = client.db('Divine-Travels').collection('destinations');
-                
+
+                app.get('/destinations',async(req,res)=>{
+                    const query = {} ;  ////// Here, we can get All the Data From the MongoDB Collection 
+                    const cursor = destinationCollection.find(query); //// Here I mentioned from which Database collection I would get all the Data
+                     const destinations = await cursor.toArray();
+                    res.send(destinations);
+                })
             }
             finally{
 
