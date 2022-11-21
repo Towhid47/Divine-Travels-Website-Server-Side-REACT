@@ -15,21 +15,26 @@ app.use(express.json());
 
 
 ////////The following Codes are for connect your Server to the MongoDB Database 
-
-
 const uri = `mongodb+srv://${process.env.USER_DATABASE}:${process.env.PASSWORD_DATABASE}@cluster0.8ro0fiu.mongodb.net/?retryWrites=true&w=majority`;
-
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+
+        ////////// The Function Below is to perform many Operations of MongoDB 
+        async function run(){
+            try{
+                const destinationCollection = client.db('Divine-Travels').collection('destinations');
+                
+            }
+            finally{
+
+            }
+        }
+        run().catch(error => error.message);
+
+               
 
 
 
 
-/////////////////////////////////////////////////////////////////////////
 
 
 app.get('/',(req,res)=>{
