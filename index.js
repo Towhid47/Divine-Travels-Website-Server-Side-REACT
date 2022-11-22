@@ -40,6 +40,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
                     const destination = await destinationCollection.findOne(query);
                     res.send(destination);
                 });   
+
+             ///////////////////////////////////////////////////////////////////////////////////////////
+             //////      Post Operation to insert a New Data in the MongoDB [destinations] collection 
+             //////////////////////////////////////////////////////////////////////////////////////////
+                 app.post('/destinations', async (req,res)=>{
+                     const destination = req.body;
+                     
+                     const result = await destinationCollection.insertOne(destination); //// The Data in destination variable will be inserted into MongoDB (destination) collection
+                     res.send(result);
+                 })   
             }
             finally{
 
