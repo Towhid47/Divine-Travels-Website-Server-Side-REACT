@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 
@@ -22,13 +22,24 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
         async function run(){
             try{
                 const destinationCollection = client.db('Divine-Travels').collection('destinations');
-
+           ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+           ///        Get All Data From MongoDB [destinations] Collection
+           //////////////////////////////////////////////////////////////////////////////////////////////////////////// 
                 app.get('/destinations',async(req,res)=>{
                     const query = {} ;  ////// Here, we can get All the Data From the MongoDB Collection 
                     const cursor = destinationCollection.find(query); //// Here I mentioned from which Database collection I would get all the Data
                      const destinations = await cursor.toArray();
                     res.send(destinations);
-                })
+                });
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            /////      Get Specific Single Data From MongoDB [destinations] Collection 
+            //////////////////////////////////////////////////////////////////////////////////////////
+                app.get('/destinations/:id', async (req,res)=>{
+                    const id = req.params.id;
+                    const query = {_id:ObjectId(id)};
+                    const destination = await destinationCollection.findOne(query);
+                    res.send(destination);
+                });   
             }
             finally{
 
