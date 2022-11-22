@@ -39,17 +39,27 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
                     const query = {_id:ObjectId(id)};
                     const destination = await destinationCollection.findOne(query);
                     res.send(destination);
-                });   
+                }); 
+                
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            /////     Get 3 Different Data From the same collection [destinations]
+            ///////////////////////////////////////////////////////////////////////////////////////////////  
+                app.get('/popular-destinations',async(req,res)=>{
+                    const query = {} ;  ////// Here, we can get All the Data From the MongoDB Collection 
+                    const cursor = destinationCollection.find(query); //// Here I mentioned from which Database collection I would get all the Data
+                    const destinations = await cursor.toArray();
+                    const popularDestinations = destinations.slice(2,5);
+                    res.send(popularDestinations);
+                });
 
              ///////////////////////////////////////////////////////////////////////////////////////////
              //////      Post Operation to insert a New Data in the MongoDB [destinations] collection 
              //////////////////////////////////////////////////////////////////////////////////////////
                  app.post('/destinations', async (req,res)=>{
-                     const destination = req.body;
-                     
+                     const destination = req.body;  //// Retrieving Data from the Client Side (AddDestination Component)
                      const result = await destinationCollection.insertOne(destination); //// The Data in destination variable will be inserted into MongoDB (destination) collection
                      res.send(result);
-                 })   
+                 });   
             }
             finally{
 
@@ -69,5 +79,5 @@ app.get('/',(req,res)=>{
 })
 
 app.listen(port, ()=>{
-    console.log(`Server is running on port ${port}`);
+   console.log(`Server is running on port ${port}`);
 })
