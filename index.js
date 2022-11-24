@@ -21,6 +21,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
         ////////// The Function Below is to perform many Operations of MongoDB 
         async function run(){
             try{
+              //////////////////// Creating a Collection named [destinations] in Divine-Travels Database ////////////////// 
                 const destinationCollection = client.db('Divine-Travels').collection('destinations');
            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
            ///        Get All Data From MongoDB [destinations] Collection
@@ -66,7 +67,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
             ////////////////////////////////////////////////////////////////////////////////////////////
                   const reviewsCollection = client.db('Divine-Travels').collection('reviews');  
 
-                  ///////////////////////////////////////////////////////////////////////////////////////////
+              ///////////////////////////////////////////////////////////////////////////////////////////
              //////      Post Operation to insert a New Data in the MongoDB [reviews] collection 
              //////////////////////////////////////////////////////////////////////////////////////////
              app.post('/reviews', async (req,res)=>{
@@ -74,6 +75,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
                 const result = await reviewsCollection.insertOne(userReview); //// The Data in destination variable will be inserted into MongoDB (destination) collection
                 res.send(result);
             });   
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+           ///        Get All Data From MongoDB [destinations] Collection
+           //////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+           app.get('/reviews',async(req,res)=>{
+            const query = { } ;  ////// Here, we can get All the Data From the MongoDB Collection 
+            const cursor = reviewsCollection.find(query); //// Here I mentioned from which Database collection I would get all the Data
+             const userReviews = await cursor.toArray();
+            res.send(userReviews);
+        });
             }
             finally{
 
