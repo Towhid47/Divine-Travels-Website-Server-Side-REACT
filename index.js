@@ -44,11 +44,11 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
             //////////////////////////////////////////////////////////////////////////////////////////////
             /////     Get 3 Different Data From the same collection [destinations]
             ///////////////////////////////////////////////////////////////////////////////////////////////  
-                app.get('/popular-destinations',async(req,res)=>{
+                app.get('/popular-destinations',async(req,res)=>{   /////// When hitting the url /popular-destinations in browser , you can get the following Data of (popularDestinations) variable
                     const query = {} ;  ////// Here, we can get All the Data From the MongoDB Collection 
                     const cursor = destinationCollection.find(query); //// Here I mentioned from which Database collection I would get all the Data
-                    const destinations = await cursor.toArray();
-                    const popularDestinations = destinations.slice(2,5);
+                    const destinations = await cursor.toArray();     /////// All Data has been wrapped inside an Array and assigned into destinations variable
+                    const popularDestinations = destinations.slice(2,5);   ////// Among all Data in the destinations variable , only 3 specific data taken by using slice 
                     res.send(popularDestinations);
                 });
 
@@ -60,6 +60,20 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
                      const result = await destinationCollection.insertOne(destination); //// The Data in destination variable will be inserted into MongoDB (destination) collection
                      res.send(result);
                  });   
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            /////////   Creating [reviews], a New Collection of [Divine-Travels] Database in MongoDB 
+            ////////////////////////////////////////////////////////////////////////////////////////////
+                  const reviewsCollection = client.db('Divine-Travels').collection('reviews');  
+
+                  ///////////////////////////////////////////////////////////////////////////////////////////
+             //////      Post Operation to insert a New Data in the MongoDB [reviews] collection 
+             //////////////////////////////////////////////////////////////////////////////////////////
+             app.post('/reviews', async (req,res)=>{
+                const userReview = req.body;  //// Retrieving Data from the Client Side (AddDestination Component)
+                const result = await reviewsCollection.insertOne(userReview); //// The Data in destination variable will be inserted into MongoDB (destination) collection
+                res.send(result);
+            });   
             }
             finally{
 
